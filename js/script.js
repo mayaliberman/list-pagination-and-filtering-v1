@@ -60,6 +60,10 @@ const appendPageLinks = list => {
 //activate the function with the global variable.
 appendPageLinks(listItems);
 
+// my trial to exceed but it didn't work well.
+// I was able only to do the filtering with no pagination
+
+// global variable adding dynamically search bar.
 const searchDiv = document.createElement('div');
 searchDiv.className = 'student-search';
 document.getElementsByClassName('page-header')[0].appendChild(searchDiv);
@@ -74,30 +78,39 @@ document.getElementsByClassName('student-search')[0].appendChild(submitButton);
 
 const h3 = document.querySelectorAll('h3');
 
+// search bar function with conditianls of filters.
 function searchBar(searchInput, listItems) {
+ 
   for (let i = 0; i < listItems.length; i++) {
     if (
-      searchInput.value.length !== 0 &&
-      h3[i].textContent.toLowerCase() === searchInput.value.toLowerCase()
+      h3[i].textContent.toLowerCase().includes(searchInput.value.toLowerCase())
     ) {
+      
       listItems[i].style.display = 'block';
-      console.log('full name', listItems[i]);
-    }  
-    
-     if (
-      searchInput.value.length !== 0 &&
-      h3[i].textContent.toLowerCase()[0] === searchInput.value.toLowerCase()[0]
+      
+    }
+    if (
+      h3[i].textContent
+        .toLowerCase()
+        .startsWith(searchInput.value.toLowerCase())
     ) {
+      
       listItems[i].style.display = 'block';
-      console.log('only first letter', listItems[i]);
+      
     } else {
       listItems[i].style.display = 'none';
     }
-  }
-  searchInput.value = '';
-}
 
+  }
+  console.log(searchList)
+}
+// adding two kinds of events with the search bar function - one on click and second with keyup.
 submitButton.addEventListener('click', event => {
   event.preventDefault();
+  searchBar(searchInput, listItems);
+  searchInput.value = '';
+});
+
+searchInput.addEventListener('keyup', () => {
   searchBar(searchInput, listItems);
 });
